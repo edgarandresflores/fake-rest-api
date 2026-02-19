@@ -1,0 +1,6 @@
+@DirtyApi_HostAddress = http://localhost:5079
+
+GET {{DirtyApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

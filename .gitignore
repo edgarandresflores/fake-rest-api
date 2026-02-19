@@ -1,0 +1,8 @@
+.vs
+**/logs/
+**/debug/
+**/obj/
+**/reports/
+**/bin/
+*.generated.*
+*.md
