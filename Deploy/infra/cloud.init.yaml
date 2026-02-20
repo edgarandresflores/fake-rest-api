@@ -1,0 +1,12 @@
+#cloud-config
+package_update: true
+package_upgrade: false
+
+packages:
+  - software-properties-common
+  - curl
+  - unzip
+  - git
+  - python3-pip
+  - ansible
+#No debería tener ansible, este host no orquesta, sino CodePipeline
