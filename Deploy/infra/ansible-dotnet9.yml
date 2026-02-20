@@ -1,0 +1,46 @@
+---
+- name: Install .NET 9 SDK
+  hosts: all
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Verify Debian/Ubuntu family
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.os_family == "Debian"
+        fail_msg: "This playbook supports Debian/Ubuntu only."
+
+    - name: Ensure apt prerequisites are present
+      ansible.builtin.apt:
+        name:
+          - wget
+          - gnupg
+          - apt-transport-https
+        state: present
+        update_cache: true
+
+    - name: Download Microsoft package repository file
+      ansible.builtin.get_url:
+        url: "https://packages.microsoft.com/config/ubuntu/{{ ansible_facts.distribution_version }}/packages-microsoft-prod.deb"
+        dest: /tmp/packages-microsoft-prod.deb
+        mode: "0644"
+
+    - name: Install Microsoft package repository
+      ansible.builtin.apt:
+        deb: /tmp/packages-microsoft-prod.deb
+
+    - name: Install .NET 9 SDK
+      ansible.builtin.apt:
+        name: dotnet-sdk-9.0
+        state: present
+        update_cache: true
+
+    - name: Validate dotnet installation
+      ansible.builtin.command: dotnet --version
+      register: dotnet_version
+      changed_when: false
+
+    - name: Print installed dotnet version
+      ansible.builtin.debug:
+        msg: "Installed .NET SDK version: {{ dotnet_version.stdout }}"
