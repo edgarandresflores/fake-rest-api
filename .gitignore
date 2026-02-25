@@ -6,3 +6,4 @@
 **/bin/
 *.generated.*
 *.md
+**user*
