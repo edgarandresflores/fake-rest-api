@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # ===== Ajustá esto =====
-APP_DIR="/home/ec2-user/deploy"
+APP_DIR="/home/ubuntu/deploy"
 DLL_NAME="DirtyApi.dll"
 PORT="5079"
 ENVIRONMENT="Development"
