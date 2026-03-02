@@ -47,6 +47,14 @@ studentsGroup.MapGet("/{id:int}", (int id) =>
         ? Results.Ok(student)
         : Results.NotFound())
     .WithName("GetStudentById");
+
+studentsGroup.MapPost("/create", (StudentCreate request) =>
+{
+    var student = new Student(nextStudentId++, request.FirstName, request.LastName, request.Email, request.EnrollmentDate);
+    students.Add(student);
+    return Results.Created($"/api/students/{student.Id}", student);
+})
+    .WithName("CreateStudentWithVerb");
 studentsGroup.MapPost("/", (StudentCreate request) =>
 {
     var student = new Student(nextStudentId++, request.FirstName, request.LastName, request.Email, request.EnrollmentDate);
