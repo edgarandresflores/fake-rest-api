@@ -10,4 +10,8 @@
 		<!-- Solo si realmente lo usás para Minimal APIs / AddOpenApi / transformers -->
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="publish\" />
+	</ItemGroup>
 </Project>
