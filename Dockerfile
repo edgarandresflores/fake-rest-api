@@ -3,13 +3,22 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
+# DirtyApi project layout is flat (csproj at repo root)
+COPY DirtyApi.csproj ./
+RUN dotnet restore DirtyApi.csproj
+
 COPY . .
-RUN dotnet restore
-RUN dotnet publish -c Release -o /app/publish
+RUN dotnet publish DirtyApi.csproj -c Release -o /app/publish /p:UseAppHost=false
 
-FROM public.ecr.aws/lambda/dotnet:8 AS runtime
-WORKDIR /var/task
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+WORKDIR /app
+
+# AWS Lambda Web Adapter extension
+COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.9.1 /lambda-adapter /opt/extensions/lambda-adapter
+
+ENV ASPNETCORE_URLS=http://0.0.0.0:8080
+ENV AWS_LWA_PORT=8080
+ENV ASPNETCORE_ENVIRONMENT=Production
+
 COPY --from=build /app/publish .
-
-# Replace with your real assembly and handler.
-CMD ["FakeApi::FakeApi.LambdaEntryPoint::FunctionHandlerAsync"]
+ENTRYPOINT ["dotnet", "DirtyApi.dll"]
