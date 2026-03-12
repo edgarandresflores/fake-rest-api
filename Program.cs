@@ -267,22 +267,12 @@ enrollmentsGroup.MapDelete("/{id:int}", (int id) =>
 })
     .WithName("DeleteEnrollment");
 
-var users = new Users[] { new Users(1, "Edgar", "Flores", "fedgar@mail.com", "admin"), new Users(2, "Fernando", "Gonzales", "fgonzales@mail.com", "user") };
-
-var usersGroup = app.MapGroup("/api/Users").WithTags("Users");
-
-
-usersGroup.MapGet("/", () => Results.Ok(users))
-    .WithName("GetUser");
-
 
 app.Run();
 
 record Student(int Id, string FirstName, string LastName, string Email, DateOnly EnrollmentDate);
 record Teacher(int Id, string FirstName, string LastName, string Email);
 record Course(int Id, string Title, int Credits, int TeacherId);
-
-record Users(int Id, string FirstName, string LastName, string Email, string Role);
 record Enrollment(int Id, int StudentId, int CourseId, string Grade);
 
 record StudentCreate(string FirstName, string LastName, string Email, DateOnly EnrollmentDate);
