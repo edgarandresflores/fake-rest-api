@@ -59,14 +59,7 @@ studentsGroup.MapPost("/", (StudentCreate request) =>
 })
     .WithName("CreateStudent");
 
-studentsGroup.MapPost("/create", (StudentCreate request) =>
-{
 
-    var student = new Student(nextStudentId++, request.FirstName, request.LastName, request.Email, request.EnrollmentDate);
-
-    return Results.Created($"/api/students/{student.Id}", student);
-})
-    .WithName("CreateStudentWithProps");
     
 studentsGroup.MapPut("/{id:int}", (int id, StudentUpdate request) =>
 {
