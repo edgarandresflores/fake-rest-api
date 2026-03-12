@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Builder;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
@@ -267,9 +269,19 @@ enrollmentsGroup.MapDelete("/{id:int}", (int id) =>
 })
     .WithName("DeleteEnrollment");
 
+var users = new Users[] { new Users(2, "email@email.com") };
+
+
+var usersGroup = app.MapGroup("/api/users").WithTags("Users");
+
+usersGroup.MapGet("/GetUsers", () => Results.Ok(users))
+    .WithName("GetUsers");
+
+
 
 app.Run();
 
+record Users(int Id, string email);
 record Student(int Id, string FirstName, string LastName, string Email, DateOnly EnrollmentDate);
 record Teacher(int Id, string FirstName, string LastName, string Email);
 record Course(int Id, string Title, int Credits, int TeacherId);
